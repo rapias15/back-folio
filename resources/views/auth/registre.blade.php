@@ -26,7 +26,6 @@
                         <span v-if="error" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @{error}
                         <label for="password" class="col-form-label">Password</label>
                         <input type="password" class="form-control" v-model="validation.password" name="password" id="password">
                         <span v-if="error" class="text-danger"></span>

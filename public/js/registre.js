@@ -25,6 +25,9 @@ const registre = createApp({
                 success: response => {
                     console.log('Tafiditra soa aman-tsara ilay user oh!');
                 },
+                error: function(errors) {
+                    console.log("Ity ny erreur : ",errors.responseJSON);
+                }
             })
         },
     },

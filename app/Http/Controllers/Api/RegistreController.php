@@ -5,27 +5,35 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegistreController extends Controller
 {
     public function registre(Request $request)
     {
-        $request->validate([
+        $res = '';
+         $request->validate([
             'username' => 'required',
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        $user = new User();
-        $user->username = $request->username ;
-        $user->email = $request->email ;
-        $user->password = bcrypt($request->password);
+        try {
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+    
+            $user->save();
+            return response()->json([
+               'message' => 'Create user successfull',
+                'status_code' => 200,
+                'data' => $user,
+            ]);
+        } catch (\Exception $e) {
+            $res = $e->getMessage();
+            return response()->json($res);
+        }
 
-        $res = $user->save();
-
-        return response()->json([
-            'message' => 'Create user successfull',
-            'status_code' => 200,
-            'data' => $res,
-        ]);
     }
 }
