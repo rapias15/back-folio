@@ -14,7 +14,7 @@ use App\Http\Controllers\AuthentificateController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
 

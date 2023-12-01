@@ -12,8 +12,10 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        $message='message';
-        $resultat = false;
+        $resultat = [
+            'message' => '',
+            'statut' => false,
+        ];
         $request->validate([
         'email' => 'email|required',
         'password' => 'required'
@@ -24,24 +26,20 @@ class LoginController extends Controller
             $password = Hash::check($request->password, $user->password);
             if ($password) {
                 $tokenResult = $user->createToken('authToken')->plainTextToken;
-                $resultat = true;
-                return response()->json([
-                    $tokenResult,
-                    $message => 'Login successful',
-                    $resultat => true
-                ]);
+                $resultat = [
+                    'message' => 'login successful',
+                    'statut' => true,
+                    'token' => $tokenResult
+                ];
             } else {
-                $message = 'Password invalid';
-                $resultat = false;
-                return response()->json($message, $resultat);
+                $resultat = [
+                    'message' => 'password invalid',
+                    'statut' => false
+                ];
             }
+            return response()->json($resultat);
         } else {
-            $message = 'User invalide';
-            $resultat = false;
-            return response()->json([
-                $message,
-                $resultat
-            ]);
+            return response()->json($resultat);
         }
     } 
 }
